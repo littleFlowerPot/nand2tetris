@@ -14,5 +14,32 @@ CHIP Mux {
     OUT out;
 
     PARTS:
-    // Put your code here:
+	/*// circuit 1, that will always output a for inputs a,b:
+	And(a=a,b=b,out=w1c1);
+	Not(in=b,out=notb);
+	And(a=a,b=notb,out=w2c1);
+	Or(a=w1c1,b=w2c1,out=wc1);
+
+	Circuit 2, that will always output b for inputs a,b:
+	And(a=a,b=b,out=w1c2);
+	Not(in=a,out=nota);
+	And(a=nota,b=b,out=w2c2);
+	Or(a=w1c2,b=w2c2,out=wc2);
+
+	Combining output from circuits 1 and 2 each with a selctor signal (one of them inverted) and And
+	 gate, and routing the output of that through an Or gate for the final output:
+	Not(in=sel,out=notsel);
+	And(a=wc1,b=notsel,out=w1);
+	And(a=wc2,b=sel,out=w2);
+	Or(a=w1,b=w2,out=out);
+	*/	
+
+	//After Polya's recommended "looking back" step, and analysing Petzold's solution 
+	//( which turns out to be exactly mine! I didn't at the time see the reduncancy
+	// of the circuits 1 and 2) Here is the improved and more efficient implementation:
+
+	Not(in=sel,out=notsel);
+	And(a=a, b=notsel,out=w1);
+	And(a=sel, b=b,out=w2);
+	Or(a=w1,b=w2,out=out);
 }
